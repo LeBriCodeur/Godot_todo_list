@@ -1,10 +1,10 @@
-tool
+@tool
 extends EditorPlugin
 
 var sc_todo
 
 func _enter_tree():
-	sc_todo = preload("res://addons/ToDoList/ToDo_scenes/MCF_todo.tscn").instance()
+	sc_todo = preload("res://addons/ToDoList/ToDo_scenes/MCF_todo.tscn").instantiate()
 	add_control_to_dock(DOCK_SLOT_RIGHT_BL, sc_todo)
 
 func _exit_tree():

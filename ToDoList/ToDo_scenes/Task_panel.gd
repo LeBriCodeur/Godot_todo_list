@@ -1,15 +1,15 @@
-tool
+@tool
 extends Panel
 
 signal update_info(id, is_checked)
 
-var task_id : int setget set_task_id, get_task_id
-var task_name : String setget set_task_name, get_task_name
-var task_checked : bool setget set_task_checked, get_task_checked
+var task_id : int : get = get_task_id, set = set_task_id
+var task_name : String : get = get_task_name, set = set_task_name 
+var task_checked : bool : get = get_task_checked, set = set_task_checked
 
 func _ready():
 	randomize()
-	task_id = randi() # en cas de soucis créer un uid
+	task_id = randi() # en cas de soucis créer un uid (edit de Aroun du futur : c'est un peu bancale ^^)
 
 func set_info(a_id, a_name, a_checked):
 	set_task_id(a_id)
@@ -32,11 +32,11 @@ func _on_CheckBox_toggled(button_pressed):
 	set_task_checked(button_pressed)
 
 func _on_BtnEdit_pressed():
-	if $TextTask.readonly:
-		$TextTask.readonly = false
+	if $TextTask.editable:
+		$TextTask.editable = false
 	else:
-		$TextTask.readonly = true
+		$TextTask.editable = true
 
 func _on_TextTask_focus_exited():
-	$TextTask.readonly = true
+	$TextTask.editable = true
 	set_task_name($TextTask.text)

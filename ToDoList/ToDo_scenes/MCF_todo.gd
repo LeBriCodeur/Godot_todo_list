@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 var dico_save : Dictionary
@@ -14,7 +14,7 @@ func load_todo_list():
 		create_old_task(i)
 
 func create_old_task(i):
-	var old_task = load("res://addons/ToDoList/ToDo_scenes/Task_panel.tscn").instance()
+	var old_task = load("res://addons/ToDoList/ToDo_scenes/Task_panel.tscn").instantiate()
 	$Panel/ScrollContainer/TaskContainer.add_child(old_task)
 	old_task.connect("update_info", self, "save_task")
 	old_task.set_info(dico_save[i]["task_id"], dico_save[i]["task_name"], dico_save[i]["task_checked"])
@@ -28,16 +28,18 @@ func save_task(_id = -1, _is_checked = false):
 				"task_name" : i.task_name,
 				"task_checked" : i.task_checked,
 			}
-	get_node("Sys_save").save(to_json(n_dico))
+	get_node("Sys_save").save(var_to_str(n_dico))
 
 func add_task():
-	if $Panel/VBoxContainer/TaskEdit.text.empty(): return
-	var nt = load("res://addons/ToDoList/ToDo_scenes/Task_panel.tscn").instance()
+	
+	if $Panel/VBoxContainer/TaskEdit.text.is_empty(): return
+	var nt = load("res://addons/ToDoList/ToDo_scenes/Task_panel.tscn").instantiate()
 	nt.get_node("TextTask").text = $Panel/VBoxContainer/TaskEdit.text
 	get_node("Panel/ScrollContainer/TaskContainer").add_child(nt)
 	nt.task_name = $Panel/VBoxContainer/TaskEdit.text
 	$Panel/VBoxContainer/TaskEdit.text = ""
-	nt.connect("update_info", self, "save_task")
+	nt.update_info.connect(save_task)
+#	nt.connect("update_info", self, "save_task")
 
 func _on_BtnAddTask_pressed():
 	add_task()
